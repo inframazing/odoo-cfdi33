@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <odoo>
+        
+        <!-- Form -->
+        <record id="cfdi_pac_config_view_form" model="ir.ui.view">
+            <field name="name">cfdi.pac.config.view.form</field>
+            <field name="model">cfdi.pac.config</field>
+            <field name="arch" type="xml">
+                <form string="Configuración de PAC">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                                <field name="active" widget="boolean_button" options="{&quot;terminology&quot;: &quot;archive&quot;}"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1><field name="name"/></h1>
+                            <label for="url"/>
+                            <h2><field name="url"/></h2>
+                        </div>
+                        <notebook>
+                            <page string="Datos Generales">
+                                <group string="Cuenta PAC">
+                                    <group>
+                                        <field name="user"/>
+                                        <field name="password" widget="password"/>
+                                    </group>
+                                    <group>
+                                        <field name="timbrar"/>
+                                        <field name="cancelar"/>
+                                    </group>
+                                </group>
+                                <group string="Funciones PAC">
+                                    <group>
+                                        <field name="acuse"/>
+                                        <field name="status"/>
+                                    </group>
+                                </group>
+                                <group string="Datos SAT">
+                                    <field name="key_name" invisible="True"/>
+                                    <field name="key" filename="key_name"/>
+                                    <field name="contrasena"/>
+                                    <field name="key_pem" invisible="True"/>
+                                    <field name="cer_name" invisible="True"/>
+                                    <field name="cer" filename="cer_name"/>
+                                    <field name="no_cer"/>
+                                    <field name="start_date"/>
+                                    <field name="end_date"/>
+                                </group>
+                            </page>
+                            <page string="Datos técnicos">
+                                <group>
+                                    <field name="timbres" readonly="True"/>
+                                    <field name="cancelaciones" readonly="True"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree -->
+        <record id="cfdi_pac_config_view_tree" model="ir.ui.view">
+            <field name="name">cfdi.pac.config.view.tree</field>
+            <field name="model">cfdi.pac.config</field>
+            <field name="arch" type="xml">
+                <tree string="Configuración PAC">
+                    <field name="name"/>
+                    <field name="url"/>
+                    <field name="no_cer"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Action windows -->
+        <record id="cfdi_pac_config_action" model="ir.actions.act_window">
+            <field name="name">Configuración PAC</field>
+            <field name="res_model">cfdi.pac.config</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Menuitem -->
+        <menuitem id="cfdi_pac_config_menu" action="cfdi_pac_config_action" parent="base.menu_users" sequence="40"/>
+
+    </odoo>

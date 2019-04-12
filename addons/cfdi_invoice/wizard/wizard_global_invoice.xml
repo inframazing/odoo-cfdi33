@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <odoo>
+        
+        <record id="wizard_global_invoice" model="ir.ui.view">
+            <field name="name">Asistente para Elaborar la Factura Global</field>
+            <field name="model">wizard.global.invoice</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Asistente para Elaborar la Factura Global">
+                    <p>
+                        Las facturas globales son los comprobantes fiscales que deben de incluir todas las ventas al público en general no facturadas.
+                        <br/>
+                        <strong>El CFDI global deberá expedirse a más tardar a las 72 horas siguientes al cierre de las operaciones que lo integran.</strong>
+                    </p>
+                    <group>
+                        <group>
+                            <field name="filterDate"/>
+                        </group>
+                        <group>
+                            <field name="date"   attrs="{'invisible': [('filterDate', '!=', 'day')], 'required': [('filterDate', '=', 'day')]}"/>
+                            <field name="month" attrs="{'invisible': [('filterDate', '!=', 'month')], 'required': [('filterDate', '=', 'month')]}"/>
+                        </group>
+                        <group>
+                            <field name="branch_id" options="{'no_create': True, 'no_open': True}"/>
+                        </group>
+                        <group> 
+                            <button name="getOrders" string="Consultar" type="object"/>
+                        </group>
+                    </group>
+                    <p>
+                        A continuación se muestran todas las ventas no facturadas, Elimina las ventas que deseas que se excluyan en la factura global y da clic en el botón <strong>"Crear factura".</strong>
+                    </p>
+                    <field name="sale_order_ids">
+                        <tree editable="bottom" create="0">
+                            <field name="order_id" options="{'no_create': True}"/>
+                            <field name="date_order"/>
+                            <field name="partner_id"/>
+                            <field name="user_id"/>
+                            <field name="amount_total" sum="Total"/>
+                            <field name="invoice_status" string="Status"/>
+                            <field name="currency_id" invisible="1"/>
+                        </tree>
+                    </field>
+                    <footer>
+                        <button string="Cancel" special="cancel"/>
+                        <button name="create_invoice" string="Crear factura" type="object" class="oe_highlight"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_wizard_global_invoice" model="ir.actions.act_window">
+            <field name="name">Asistente para Elaborar la Factura Global</field>
+            <field name="res_model">wizard.global.invoice</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="wizard_global_invoice"/>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem 
+            id="menu_wizard_global_invoice" 
+            name="Factura global" 
+            parent="account.menu_finance_receivables" 
+            action="action_wizard_global_invoice" 
+            sequence="200"/>
+
+    </odoo>

@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <odoo>
+        <data noupdate="1">
+            
+            <function id="function_disable_uom" model="product.uom" name="disable_uom"/>
+
+            <record id="product_categ_type_id_1" model="product.uom.categ">
+                <field name="name">Múltiplos / Fracciones / Decimales</field>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_categ_type_id_2" model="product.uom.categ">
+                <field name="name">Unidades de venta</field>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_categ_type_id_3" model="product.uom.categ">
+                <field name="name">Unidades específicas de la industria (varias)</field>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_categ_type_id_4" model="product.uom.categ">
+                <field name="name">Mecánica</field>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_categ_type_id_5" model="product.uom.categ">
+                <field name="name">Diversos</field>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_categ_type_id_6" model="product.uom.categ">
+                <field name="name">Tiempo y Espacio</field>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_categ_type_id_7" model="product.uom.categ">
+                <field name="name">Unidades de empaque</field>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_categ_type_id_8" model="product.uom.categ">
+                <field name="name">Números enteros / Números / Ratios</field>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_uom_1" model="product.uom">
+                <field name="name">Pieza</field>
+                <field name="sat_code">H87</field>
+                <field name="category_id" ref="product_categ_type_id_1"/>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_uom_2" model="product.uom">
+                <field name="name">Elemento</field>
+                <field name="sat_code">EA</field>
+                <field name="category_id" ref="product_categ_type_id_2"/>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_uom_3" model="product.uom">
+                <field name="name">Unidad de Servicio</field>
+                <field name="sat_code">E48</field>
+                <field name="category_id" ref="product_categ_type_id_3"/>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_uom_4" model="product.uom">
+                <field name="name">Actividad</field>
+                <field name="sat_code">ACT</field>
+                <field name="category_id" ref="product_categ_type_id_2"/>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_uom_5" model="product.uom">
+                <field name="name">Kilogramo</field>
+                <field name="sat_code">KGM</field>
+                <field name="category_id" ref="product_categ_type_id_4"/>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_uom_6" model="product.uom">
+                <field name="name">Trabajo</field>
+                <field name="sat_code">E51</field>
+                <field name="category_id" ref="product_categ_type_id_2"/>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_uom_7" model="product.uom">
+                <field name="name">Tarifa</field>
+                <field name="sat_code">A9</field>
+                <field name="category_id" ref="product_categ_type_id_5"/>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_uom_8" model="product.uom">
+                <field name="name">Metro</field>
+                <field name="sat_code">MTR</field>
+                <field name="category_id" ref="product_categ_type_id_6"/>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_uom_9" model="product.uom">
+                <field name="name">Paquete a granel</field>
+                <field name="sat_code">AB</field>
+                <field name="category_id" ref="product_categ_type_id_5"/>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_uom_10" model="product.uom">
+                <field name="name">Caja base</field>
+                <field name="sat_code">BB</field>
+                <field name="category_id" ref="product_categ_type_id_3"/>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_uom_11" model="product.uom">
+                <field name="name">Kit</field>
+                <field name="sat_code">KT</field>
+                <field name="category_id" ref="product_categ_type_id_2"/>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_uom_12" model="product.uom">
+                <field name="name">Conjunto</field>
+                <field name="sat_code">SET</field>
+                <field name="category_id" ref="product_categ_type_id_2"/>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_uom_13" model="product.uom">
+                <field name="name">Litro</field>
+                <field name="sat_code">LTR</field>
+                <field name="category_id" ref="product_categ_type_id_6"/>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_uom_14" model="product.uom">
+                <field name="name">Caja</field>
+                <field name="sat_code">XBX</field>
+                <field name="category_id" ref="product_categ_type_id_7"/>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_uom_15" model="product.uom">
+                <field name="name">Mes</field>
+                <field name="sat_code">MON</field>
+                <field name="category_id" ref="product_categ_type_id_6"/>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_uom_16" model="product.uom">
+                <field name="name">Hora</field>
+                <field name="sat_code">HUR</field>
+                <field name="category_id" ref="product_categ_type_id_6"/>
+                <field name="active" eval="True"/>
+            </record>
+            <record id="product_uom_17" model="product.uom">
+                <field name="name">Metro cuadrado</field>
+                <field name="sat_code">MTK</field>
+                <field name="category_id" ref="product_categ_type_id_6"/>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_uom_18" model="product.uom">
+                <field name="name">Equipos</field>
+                <field name="sat_code">11</field>
+                <field name="category_id" ref="product_categ_type_id_5"/>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_uom_19" model="product.uom">
+                <field name="name">Miligramo</field>
+                <field name="sat_code">MGM</field>
+                <field name="category_id" ref="product_categ_type_id_4"/>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_uom_20" model="product.uom">
+                <field name="name">Paquete</field>
+                <field name="sat_code">XPK</field>
+                <field name="category_id" ref="product_categ_type_id_7"/>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_uom_21" model="product.uom">
+                <field name="name">Kit (Conjunto de piezas)</field>
+                <field name="sat_code">XKI</field>
+                <field name="category_id" ref="product_categ_type_id_7"/>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_uom_22" model="product.uom">
+                <field name="name">Variedad</field>
+                <field name="sat_code">AS</field>
+                <field name="category_id" ref="product_categ_type_id_5"/>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_uom_23" model="product.uom">
+                <field name="name">Gramo</field>
+                <field name="sat_code">GRM</field>
+                <field name="category_id" ref="product_categ_type_id_4"/>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_uom_24" model="product.uom">
+                <field name="name">Par</field>
+                <field name="sat_code">PR</field>
+                <field name="category_id" ref="product_categ_type_id_8"/>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_uom_25" model="product.uom">
+                <field name="name">Docenas de piezas</field>
+                <field name="sat_code">DPC</field>
+                <field name="category_id" ref="product_categ_type_id_2"/>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_uom_26" model="product.uom">
+                <field name="name">Unidad</field>
+                <field name="sat_code">xun</field>
+                <field name="category_id" ref="product_categ_type_id_7"/>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_uom_27" model="product.uom">
+                <field name="name">Día</field>
+                <field name="sat_code">DAY</field>
+                <field name="category_id" ref="product_categ_type_id_6"/>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_uom_28" model="product.uom">
+                <field name="name">Lote</field>
+                <field name="sat_code">XLT</field>
+                <field name="category_id" ref="product_categ_type_id_7"/>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_uom_29" model="product.uom">
+                <field name="name">Grupos</field>
+                <field name="sat_code">10</field>
+                <field name="category_id" ref="product_categ_type_id_5"/>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_uom_30" model="product.uom">
+                <field name="name">Mililitro</field>
+                <field name="sat_code">MLT</field>
+                <field name="category_id" ref="product_categ_type_id_6"/>
+                <field name="active" eval="True"/>
+            </record>
+
+            <record id="product_uom_31" model="product.uom">
+                <field name="name">Viaje</field>
+                <field name="sat_code">E54</field>
+                <field name="category_id" ref="product_categ_type_id_3"/>
+                <field name="active" eval="True"/>
+            </record>
+        </data>
+    </odoo>

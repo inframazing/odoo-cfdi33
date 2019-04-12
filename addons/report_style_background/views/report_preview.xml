@@ -1,0 +1,586 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="load_css_style">
+        <t t-set="company_id" t-value="company" />
+        <t t-set="primary" t-value="company_id.color_primary"/>
+        <t t-set="secondary" t-value="company_id.color_secondary"/>
+        <t t-set="title" t-value="company_id.color_title"/>
+        <t t-set="text" t-value="company_id.color_text"/>
+        <t t-set="highlight" t-value="company_id.color_highlight"/>
+        <t t-set="important" t-value="company_id.color_important"/>
+        <t t-set="x" t-value="company_id.x"/>
+        <t t-set="y" t-value="company_id.y"/>
+        <t t-set="x_l" t-value="company_id.x_l"/>
+        <t t-set="y_l" t-value="company_id.y_l"/>
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"/>
+        <style>
+            .page{
+                font-family: 'Roboto', sans-serif;
+            }
+            .header{
+                font-family: 'Roboto', sans-serif;
+            }
+            .footer{
+                font-family: 'Roboto', sans-serif;
+            }
+            .bar1{
+                height: 10px;
+                width: 100%;
+                background-color: <t t-esc="primary"/>;
+            }
+            .bar2{
+                height: 15px;
+                width: 100%;
+                background-color: <t t-esc="secondary"/>;
+                margin-bottom: 10px;
+            }
+            .hline1{
+                height: 1px;
+                width: 100%;
+                background-color: <t t-esc="primary"/>;
+                margin-bottom: 10px;
+            }
+            .logo{
+                 width: 130px;
+            }
+            .header1{
+                font-weight: bolder;
+                color: <t t-esc="primary"/>;
+                font-size: 14pt;
+            }
+            .header2{
+                font-weight: bolder;
+                color: <t t-esc="title"/>;
+                font-size: 12pt;
+            }
+            .title{
+                font-weight: bolder;
+                color: <t t-esc="title"/>;
+                font-size: 13pt;
+                margin-bottom: 10pt;
+            }
+            .subtitle{
+                font-weight: bolder;
+                color: <t t-esc="title"/>;
+                font-size: 12pt;
+                margin-bottom: 6pt;
+            }
+            .document-title{
+                font-weight: bolder;
+                color: <t t-esc="highlight"/>;
+                font-size: 12pt;
+            }
+            .document-name{
+                font-weight: bolder;
+                color: <t t-esc="important"/>;
+                font-size: 11pt;
+            }
+            .page-background{
+                background-repeat: repeat-y;
+                background-position: 50% 0%;
+                background-size: <t t-esc="x"/> <t t-esc="y"/>;
+            }
+            .page-background-landscape{
+                background-repeat: repeat-y;
+                background-position: 50% 0%;
+                background-size: <t t-esc="x_l"/> <t t-esc="y_l"/>;
+            }
+            .center{
+                text-align: center;
+            }
+            table{
+                width: 100%;
+            }
+            thead{
+                background-color: <t t-esc="secondary"/>;
+                color: <t t-esc="primary"/>;
+                border-bottom: 2px solid <t t-esc="primary"/>;
+                font-weight: bolder;
+                font-size: 12pt;
+            }
+            th{
+                padding: 4px; 
+                vertical-align: middle;
+                border-bottom: 2px solid <t t-esc="primary"/>;
+            }
+            tr{
+                border-bottom: 1px solid <t t-esc="secondary"/>;
+            }
+            td{
+                padding:5px; 
+            }
+            hr{
+                display: block;
+                height: 1px;
+                border: 0;
+                border-top: 1px solid <t t-esc="primary"/>;
+                margin: 1em 0;
+                padding: 0;
+            }
+            .text{
+                color: <t t-esc="text"/>;
+                font-size: 11pt;
+                text-align: justify;
+            }
+            .notes{
+                font-weight: bold;
+                color: <t t-esc="important"/>;
+                text-align: justify;
+            }
+            .text-small{
+                font-size: 10pt;
+            }
+            .text-super-small{
+                font-size: 8pt;
+            }
+            .foot{
+                color: <t t-esc="primary"/>;
+                text-align: center;
+                border-top: 2px solid <t t-esc="primary"/>;
+            }
+        </style>
+    </template>
+
+    <template id="custom_header">
+        <div class="header">
+            <t t-call="report_style_background.load_css_style"/>
+            <div class="row">
+                <div class="bar1"/>
+                <div class="bar2"/>
+            </div>
+            <div class="row">
+                <div class="col-xs-3">
+                    <span t-field="company_id.logo" t-field-options="{'widget': 'image', 'class': 'logo'}"/>
+                </div>
+                <div class="col-xs-6">
+                    <div class="center">
+                        <span class="header1" t-field="company_id.name"/><br/>
+                        <span class="header2" t-field="company_id.rml_header1"/><br/>
+                        <span class="header2" t-field="company_id.vat"/><br/>
+                        <span class="header2" t-field="company_id.street"/><br/>
+                        <span class="header2">CP. </span>
+                        <span class="header2" t-field="company_id.zip"/>
+                        <span class="header2" t-field="company_id.city"/>
+                        <span class="header2" t-field="company_id.state_id"/>
+                        <span class="header2" t-field="company_id.country_id"/>
+                    </div>
+                </div>
+                <div class="col-xs-3 center">
+                    <center>
+                        <t t-if="doc_title">
+                            <span class="document-title"><span t-esc="doc_title"/></span><br/>
+                        </t>
+                        <t t-if="doc_name">
+                            <span class="document-name" t-esc="doc_name"/><br/>
+                            <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', doc_name, 600, 100)" style="width:220px;height:50px;"/>
+                        </t>
+                    </center>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="custom_footer">
+        <div class="footer">
+            <t t-call="report_style_background.load_css_style"/>
+            <div class="foot">
+                <b><span>Teléfono: </span></b>
+                <span t-field="company_id.phone"/>
+                <b><span>  •  Correo electrónico:</span></b>
+                <span t-field="company_id.email"/>
+                <b><span>  •  Sitio web:</span></b>
+                <span t-field="company_id.website"/>
+                <br/>
+                <span> Página </span>
+                <span class="page"/>
+                <span> / </span>
+                <span class="topage"/>
+            </div>
+        </div>
+    </template>
+
+    <template id="custom_container">
+        <t t-if="not company_id">
+            <t t-if="o and 'company_id' in o">
+                <t t-set="company" t-value="o.company_id"/>
+            </t>
+            <t t-if="not company">
+                <t t-set="company" t-value="res_company"/>
+            </t>
+            <t t-set="company_id" t-value="company"/>
+        </t>
+        <t t-call="report_style_background.custom_header"/>
+        <t t-call="report_style_background.custom_footer"/>
+        <div class="page" style="padding: 0px 20px 0px 20px;">
+            <t t-call="report_style_background.load_css_style"/>
+            <t t-set="class_image" t-value="'page-background'"/>
+            <t t-set="background" t-value="company_id.background"/>
+            <t t-if="landscape">
+                <t t-set="class_image" t-value="'page-background-landscape'"/>
+                <t t-set="background" t-value="company_id.background_landscape"/>
+            </t>
+            <div t-att-style="'background-image: url(data:image/png;base64,%s);' % (background,)" t-att-class="class_image">
+                <t t-raw="0"/>
+                <div style="page-break-after: always;"></div>
+            </div>
+        </div>
+    </template>
+
+    <template id="report_preview_template">
+        <t t-call="report.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="doc_title" t-value="'EMPRESA'"/>
+                <t t-set="doc_name" t-value="o.name"/>
+                <t t-call="report_style_background.custom_container">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="title" t-field="o.name"/>
+                        </div>
+                        <div class="col-xs-12">
+                            <div class="title">Titulo (tamaños de letra)</div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="subtitle">Subtitulo (letra normal)</div>
+                            <p class="text">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vel quam ut augue vehicula fermentum. Aliquam non lectus vitae arcu accumsan scelerisque at sit amet leo. Cras tincidunt lacus at feugiat auctor. Suspendisse dictum tempor posuere. Nulla sollicitudin dui mi, in blandit velit luctus id. Sed facilisis hendrerit porta. Donec nec lorem id purus molestie vestibulum et quis risus. Duis ac mi fringilla ante ultrices euismod nec id risus.
+                                Morbi imperdiet justo quis leo mollis, nec porta mauris ultrices. Cras faucibus sit amet nisi a porttitor.
+                            </p>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="subtitle">Subtitulo (letra pequeña)</div>
+                            <p class="text text-small">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vel quam ut augue vehicula fermentum. Aliquam non lectus vitae arcu accumsan scelerisque at sit amet leo. Cras tincidunt lacus at feugiat auctor. Suspendisse dictum tempor posuere. Nulla sollicitudin dui mi, in blandit velit luctus id. Sed facilisis hendrerit porta. Donec nec lorem id purus molestie vestibulum et quis risus. Duis ac mi fringilla ante ultrices euismod nec id risus.
+                                Morbi imperdiet justo quis leo mollis, nec porta mauris ultrices. Cras faucibus sit amet nisi a porttitor. Aenean neque mauris, vestibulum id facilisis ac, laoreet sit amet turpis. Pellentesque faucibus consequat lorem, malesuada consectetur felis posuere vitae. Proin accumsan, arcu non iaculis elementum, quam massa suscipit tortor, vel convallis erat orci sed arcu.
+                            </p>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="subtitle">Subtitulo (letra super pequeña)</div>
+                            <p class="text text-super-small">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vel quam ut augue vehicula fermentum. Aliquam non lectus vitae arcu accumsan scelerisque at sit amet leo. Cras tincidunt lacus at feugiat auctor. Suspendisse dictum tempor posuere. Nulla sollicitudin dui mi, in blandit velit luctus id. Sed facilisis hendrerit porta. Donec nec lorem id purus molestie vestibulum et quis risus. Duis ac mi fringilla ante ultrices euismod nec id risus.
+                                Morbi imperdiet justo quis leo mollis, nec porta mauris ultrices. Cras faucibus sit amet nisi a porttitor. Aenean neque mauris, vestibulum id facilisis ac, laoreet sit amet turpis. Pellentesque faucibus consequat lorem, malesuada consectetur felis posuere vitae. Proin accumsan, arcu non iaculis elementum, quam massa suscipit tortor, vel convallis erat orci sed arcu. Nulla vestibulum augue at lectus suscipit, sit amet faucibus sem ultricies. Vivamus rhoncus sagittis enim, eget aliquam lectus interdum vel. Proin euismod nisl at lectus ornare sodales. Phasellus non libero id nibh dapibus feugiat.
+                            </p>
+                        </div>
+                    </div><hr/>
+                    <div class="row">
+                        <div class="col-xs-12 title">Tablas</div>
+                        <div class="col-xs-12">
+                            <table>
+                                <thead>
+                                    <th>Columna 1</th>
+                                    <th>Columna 2</th>
+                                    <th>Columna 3</th>
+                                    <th>Columna 4</th>
+                                    <th>Columna 5</th>
+                                </thead>
+                                <tbody class="text">
+                                    <tr>
+                                        <td> Contenido 1</td>
+                                        <td> Contenido 2</td>
+                                        <td> Contenido 3</td>
+                                        <td> Contenido 4</td>
+                                        <td> Contenido 5</td>
+                                    </tr>
+                                    <tr>
+                                        <td> Contenido 1</td>
+                                        <td> Contenido 2</td>
+                                        <td> Contenido 3</td>
+                                        <td> Contenido 4</td>
+                                        <td> Contenido 5</td>
+                                    </tr>
+                                    <tr>
+                                        <td> Contenido 1</td>
+                                        <td> Contenido 2</td>
+                                        <td> Contenido 3</td>
+                                        <td> Contenido 4</td>
+                                        <td> Contenido 5</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-xs-12 text notes">
+                            Así es como luce una tabla con el estilo actual del reporte. Esta nota tiene un estilo de importante.
+                        </div>
+                    </div><hr/>
+                    <div class="row">
+                        <div class="col-xs-12 title">
+                            Algunos saltos de linea con hr
+                        </div>
+                        <div class="col-xs-12">
+                            <hr/>
+                            <hr/>
+                            <hr/>
+                            <hr/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 title">
+                            Contenido extra para generar una página nueva
+                        </div>
+                        <div class="col-xs-12 text notes">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce scelerisque tempus lorem in tristique. Phasellus eget venenatis dolor. Curabitur facilisis accumsan leo et porttitor. Fusce eu lorem vitae mi accumsan blandit. Sed ut mi eu eros dictum feugiat. Fusce ut justo ut sapien posuere ultricies. Nunc efficitur purus vitae efficitur tempor. Mauris fermentum ultrices urna, ut vulputate turpis tincidunt eget. Quisque a justo et nisi elementum commodo sed vel nulla.
+                            Sed erat nisi, ultrices non arcu sit amet, egestas pulvinar nunc. Cras vestibulum facilisis dui, id ultrices nunc commodo consectetur. Interdum et malesuada fames ac ante ipsum primis in faucibus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut rutrum lectus sed interdum placerat. Mauris dapibus leo quis velit cursus gravida. Ut tincidunt sit amet nisl non eleifend. Nullam ac blandit est, sit amet eleifend felis. Maecenas at tellus in felis semper faucibus.
+                            Suspendisse tristique augue odio, et pellentesque est hendrerit quis. Sed pulvinar metus nisl, non maximus nisl tempor at. Sed magna ex, pulvinar efficitur nisl at, maximus tristique purus. Curabitur id dui ac ex aliquam auctor. Vestibulum pharetra mauris quam, interdum ullamcorper arcu blandit vel. Nulla malesuada eros non congue iaculis. Nullam lobortis nibh ac erat ultrices volutpat. Aliquam vestibulum dolor at lectus mattis maximus non sit amet lorem. Integer ac placerat nisl. Pellentesque pulvinar, libero ac venenatis varius, tortor orci commodo tortor, ut porttitor sem risus ac neque. Nam rutrum sed metus eu ornare. Sed feugiat erat at nisl semper euismod. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec massa eros, egestas et felis a, consectetur placerat augue. Vestibulum turpis leo, faucibus ut tristique eu, condimentum eget nisl.
+                            Integer dapibus metus mollis placerat dictum. Aenean facilisis consectetur urna, vel tristique tellus malesuada nec. Vestibulum nec cursus augue, ut lobortis justo. Vivamus ultrices ultrices ligula, ut ullamcorper arcu aliquet id. Integer ornare eu arcu eget eleifend. Nulla pellentesque elit mauris, eu scelerisque mauris hendrerit ut. Curabitur elementum lacus a felis lobortis, nec laoreet odio molestie.
+                            Nunc id nisl nec ex commodo tincidunt et in elit. Integer finibus dolor id ipsum egestas, ac condimentum mauris pretium. Ut libero nulla, fringilla sit amet massa quis, tincidunt efficitur quam. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam vitae commodo eros, non egestas dui. In ultricies, nunc ut gravida consectetur, nisi odio volutpat odio, eu ultricies turpis augue vel eros. Nullam eget tempor sapien, et accumsan nibh.
+                        </div>
+                        <div class="col-xs-12">
+                            <br/>
+                            <hr/>
+                            <br/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <p class="text">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vel quam ut augue vehicula fermentum. Aliquam non lectus vitae arcu accumsan scelerisque at sit amet leo. Cras tincidunt lacus at feugiat auctor. Suspendisse dictum tempor posuere. Nulla sollicitudin dui mi, in blandit velit luctus id. Sed facilisis hendrerit porta. Donec nec lorem id purus molestie vestibulum et quis risus. Duis ac mi fringilla ante ultrices euismod nec id risus.
+                                Morbi imperdiet justo quis leo mollis, nec porta mauris ultrices. Cras faucibus sit amet nisi a porttitor. Aenean neque mauris, vestibulum id facilisis ac, laoreet sit amet turpis. Pellentesque faucibus consequat lorem, malesuada consectetur felis posuere vitae. Proin accumsan, arcu non iaculis elementum, quam massa suscipit tortor, vel convallis erat orci sed arcu. Nulla vestibulum augue at lectus suscipit, sit amet faucibus sem ultricies. Vivamus rhoncus sagittis enim, eget aliquam lectus interdum vel. Proin euismod nisl at lectus ornare sodales. Phasellus non libero id nibh dapibus feugiat.
+                            </p>
+                        </div>
+                        <div class="col-xs-4">
+                            <p class="text">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vel quam ut augue vehicula fermentum. Aliquam non lectus vitae arcu accumsan scelerisque at sit amet leo. Cras tincidunt lacus at feugiat auctor. Suspendisse dictum tempor posuere. Nulla sollicitudin dui mi, in blandit velit luctus id. Sed facilisis hendrerit porta. Donec nec lorem id purus molestie vestibulum et quis risus. Duis ac mi fringilla ante ultrices euismod nec id risus.
+                                Morbi imperdiet justo quis leo mollis, nec porta mauris ultrices. Cras faucibus sit amet nisi a porttitor. Aenean neque mauris, vestibulum id facilisis ac, laoreet sit amet turpis. Pellentesque faucibus consequat lorem, malesuada consectetur felis posuere vitae. Proin accumsan, arcu non iaculis elementum, quam massa suscipit tortor, vel convallis erat orci sed arcu. Nulla vestibulum augue at lectus suscipit, sit amet faucibus sem ultricies. Vivamus rhoncus sagittis enim, eget aliquam lectus interdum vel. Proin euismod nisl at lectus ornare sodales. Phasellus non libero id nibh dapibus feugiat.
+                            </p>
+                        </div>
+                        <div class="col-xs-4">
+                            <p class="text">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vel quam ut augue vehicula fermentum. Aliquam non lectus vitae arcu accumsan scelerisque at sit amet leo. Cras tincidunt lacus at feugiat auctor. Suspendisse dictum tempor posuere. Nulla sollicitudin dui mi, in blandit velit luctus id. Sed facilisis hendrerit porta. Donec nec lorem id purus molestie vestibulum et quis risus. Duis ac mi fringilla ante ultrices euismod nec id risus.
+                                Morbi imperdiet justo quis leo mollis, nec porta mauris ultrices. Cras faucibus sit amet nisi a porttitor. Aenean neque mauris, vestibulum id facilisis ac, laoreet sit amet turpis. Pellentesque faucibus consequat lorem, malesuada consectetur felis posuere vitae. Proin accumsan, arcu non iaculis elementum, quam massa suscipit tortor, vel convallis erat orci sed arcu. Nulla vestibulum augue at lectus suscipit, sit amet faucibus sem ultricies. Vivamus rhoncus sagittis enim, eget aliquam lectus interdum vel. Proin euismod nisl at lectus ornare sodales. Phasellus non libero id nibh dapibus feugiat.
+                            </p>
+                        </div>
+                    </div>
+                    <div style="page-break-after: always;"></div>
+                    <div class="row">
+                        <div class="col-xs-12 text notes">
+                            Así es como luce una tabla con el estilo actual del reporte. Esta nota tiene un estilo de importante.
+                        </div>
+                    </div>
+                    <div style="page-break-after: always;"></div>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <p class="text header">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vel quam ut augue vehicula fermentum. Aliquam non lectus vitae arcu accumsan scelerisque at sit amet leo. Cras tincidunt lacus at feugiat auctor. Suspendisse dictum tempor posuere. Nulla sollicitudin dui mi, in blandit velit luctus id. Sed facilisis hendrerit porta. Donec nec lorem id purus molestie vestibulum et quis risus. Duis ac mi fringilla ante ultrices euismod nec id risus.
+                                Morbi imperdiet justo quis leo mollis, nec porta mauris ultrices. Cras faucibus sit amet nisi a porttitor. Aenean neque mauris, vestibulum id facilisis ac, laoreet sit amet turpis. Pellentesque faucibus consequat lorem, malesuada consectetur felis posuere vitae. Proin accumsan, arcu non iaculis elementum, quam massa suscipit tortor, vel convallis erat orci sed arcu. Nulla vestibulum augue at lectus suscipit, sit amet faucibus sem ultricies. Vivamus rhoncus sagittis enim, eget aliquam lectus interdum vel. Proin euismod nisl at lectus ornare sodales. Phasellus non libero id nibh dapibus feugiat.
+                            </p>
+                        </div>
+                        <div class="col-xs-6">
+                            <p class="text header">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vel quam ut augue vehicula fermentum. Aliquam non lectus vitae arcu accumsan scelerisque at sit amet leo. Cras tincidunt lacus at feugiat auctor. Suspendisse dictum tempor posuere. Nulla sollicitudin dui mi, in blandit velit luctus id. Sed facilisis hendrerit porta. Donec nec lorem id purus molestie vestibulum et quis risus. Duis ac mi fringilla ante ultrices euismod nec id risus.
+                                Morbi imperdiet justo quis leo mollis, nec porta mauris ultrices. Cras faucibus sit amet nisi a porttitor. Aenean neque mauris, vestibulum id facilisis ac, laoreet sit amet turpis. Pellentesque faucibus consequat lorem, malesuada consectetur felis posuere vitae. Proin accumsan, arcu non iaculis elementum, quam massa suscipit tortor, vel convallis erat orci sed arcu. Nulla vestibulum augue at lectus suscipit, sit amet faucibus sem ultricies. Vivamus rhoncus sagittis enim, eget aliquam lectus interdum vel. Proin euismod nisl at lectus ornare sodales. Phasellus non libero id nibh dapibus feugiat.
+                            </p>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_preview_template_landscape">
+        <t t-call="report.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="doc_title" t-value="'EMPRESA'"/>
+                <t t-set="doc_name" t-value="o.name"/>
+                <t t-set="landscape" t-value="True"/>
+                <t t-call="report_style_background.custom_container">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="title" t-field="o.name"/>
+                        </div>
+                        <div class="col-xs-12">
+                            <div class="title">Titulo (tamaños de letra)</div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="subtitle">Subtitulo (letra normal)</div>
+                            <p class="text">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vel quam ut augue vehicula fermentum. Aliquam non lectus vitae arcu accumsan scelerisque at sit amet leo. Cras tincidunt lacus at feugiat auctor. Suspendisse dictum tempor posuere. Nulla sollicitudin dui mi, in blandit velit luctus id. Sed facilisis hendrerit porta. Donec nec lorem id purus molestie vestibulum et quis risus. Duis ac mi fringilla ante ultrices euismod nec id risus.
+                                Morbi imperdiet justo quis leo mollis, nec porta mauris ultrices. Cras faucibus sit amet nisi a porttitor.
+                            </p>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="subtitle">Subtitulo (letra pequeña)</div>
+                            <p class="text text-small">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vel quam ut augue vehicula fermentum. Aliquam non lectus vitae arcu accumsan scelerisque at sit amet leo. Cras tincidunt lacus at feugiat auctor. Suspendisse dictum tempor posuere. Nulla sollicitudin dui mi, in blandit velit luctus id. Sed facilisis hendrerit porta. Donec nec lorem id purus molestie vestibulum et quis risus. Duis ac mi fringilla ante ultrices euismod nec id risus.
+                                Morbi imperdiet justo quis leo mollis, nec porta mauris ultrices. Cras faucibus sit amet nisi a porttitor. Aenean neque mauris, vestibulum id facilisis ac, laoreet sit amet turpis. Pellentesque faucibus consequat lorem, malesuada consectetur felis posuere vitae. Proin accumsan, arcu non iaculis elementum, quam massa suscipit tortor, vel convallis erat orci sed arcu.
+                            </p>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="subtitle">Subtitulo (letra super pequeña)</div>
+                            <p class="text text-super-small">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vel quam ut augue vehicula fermentum. Aliquam non lectus vitae arcu accumsan scelerisque at sit amet leo. Cras tincidunt lacus at feugiat auctor. Suspendisse dictum tempor posuere. Nulla sollicitudin dui mi, in blandit velit luctus id. Sed facilisis hendrerit porta. Donec nec lorem id purus molestie vestibulum et quis risus. Duis ac mi fringilla ante ultrices euismod nec id risus.
+                                Morbi imperdiet justo quis leo mollis, nec porta mauris ultrices. Cras faucibus sit amet nisi a porttitor. Aenean neque mauris, vestibulum id facilisis ac, laoreet sit amet turpis. Pellentesque faucibus consequat lorem, malesuada consectetur felis posuere vitae. Proin accumsan, arcu non iaculis elementum, quam massa suscipit tortor, vel convallis erat orci sed arcu. Nulla vestibulum augue at lectus suscipit, sit amet faucibus sem ultricies. Vivamus rhoncus sagittis enim, eget aliquam lectus interdum vel. Proin euismod nisl at lectus ornare sodales. Phasellus non libero id nibh dapibus feugiat.
+                            </p>
+                        </div>
+                    </div><hr/>
+                    <div class="row">
+                        <div class="col-xs-12 title">Tablas</div>
+                        <div class="col-xs-12">
+                            <table>
+                                <thead>
+                                    <th>Columna 1</th>
+                                    <th>Columna 2</th>
+                                    <th>Columna 3</th>
+                                    <th>Columna 4</th>
+                                    <th>Columna 5</th>
+                                </thead>
+                                <tbody class="text">
+                                    <tr>
+                                        <td> Contenido 1</td>
+                                        <td> Contenido 2</td>
+                                        <td> Contenido 3</td>
+                                        <td> Contenido 4</td>
+                                        <td> Contenido 5</td>
+                                    </tr>
+                                    <tr>
+                                        <td> Contenido 1</td>
+                                        <td> Contenido 2</td>
+                                        <td> Contenido 3</td>
+                                        <td> Contenido 4</td>
+                                        <td> Contenido 5</td>
+                                    </tr>
+                                    <tr>
+                                        <td> Contenido 1</td>
+                                        <td> Contenido 2</td>
+                                        <td> Contenido 3</td>
+                                        <td> Contenido 4</td>
+                                        <td> Contenido 5</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-xs-12 text notes">
+                            Así es como luce una tabla con el estilo actual del reporte. Esta nota tiene un estilo de importante.
+                        </div>
+                    </div><hr/>
+                    <div class="row">
+                        <div class="col-xs-12 title">
+                            Algunos saltos de linea con hr
+                        </div>
+                        <div class="col-xs-12">
+                            <hr/>
+                            <hr/>
+                            <hr/>
+                            <hr/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 title">
+                            Contenido extra para generar una página nueva
+                        </div>
+                        <div class="col-xs-12 text notes">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce scelerisque tempus lorem in tristique. Phasellus eget venenatis dolor. Curabitur facilisis accumsan leo et porttitor. Fusce eu lorem vitae mi accumsan blandit. Sed ut mi eu eros dictum feugiat. Fusce ut justo ut sapien posuere ultricies. Nunc efficitur purus vitae efficitur tempor. Mauris fermentum ultrices urna, ut vulputate turpis tincidunt eget. Quisque a justo et nisi elementum commodo sed vel nulla.
+                            Sed erat nisi, ultrices non arcu sit amet, egestas pulvinar nunc. Cras vestibulum facilisis dui, id ultrices nunc commodo consectetur. Interdum et malesuada fames ac ante ipsum primis in faucibus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut rutrum lectus sed interdum placerat. Mauris dapibus leo quis velit cursus gravida. Ut tincidunt sit amet nisl non eleifend. Nullam ac blandit est, sit amet eleifend felis. Maecenas at tellus in felis semper faucibus.
+                            Suspendisse tristique augue odio, et pellentesque est hendrerit quis. Sed pulvinar metus nisl, non maximus nisl tempor at. Sed magna ex, pulvinar efficitur nisl at, maximus tristique purus. Curabitur id dui ac ex aliquam auctor. Vestibulum pharetra mauris quam, interdum ullamcorper arcu blandit vel. Nulla malesuada eros non congue iaculis. Nullam lobortis nibh ac erat ultrices volutpat. Aliquam vestibulum dolor at lectus mattis maximus non sit amet lorem. Integer ac placerat nisl. Pellentesque pulvinar, libero ac venenatis varius, tortor orci commodo tortor, ut porttitor sem risus ac neque. Nam rutrum sed metus eu ornare. Sed feugiat erat at nisl semper euismod. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec massa eros, egestas et felis a, consectetur placerat augue. Vestibulum turpis leo, faucibus ut tristique eu, condimentum eget nisl.
+                            Integer dapibus metus mollis placerat dictum. Aenean facilisis consectetur urna, vel tristique tellus malesuada nec. Vestibulum nec cursus augue, ut lobortis justo. Vivamus ultrices ultrices ligula, ut ullamcorper arcu aliquet id. Integer ornare eu arcu eget eleifend. Nulla pellentesque elit mauris, eu scelerisque mauris hendrerit ut. Curabitur elementum lacus a felis lobortis, nec laoreet odio molestie.
+                            Nunc id nisl nec ex commodo tincidunt et in elit. Integer finibus dolor id ipsum egestas, ac condimentum mauris pretium. Ut libero nulla, fringilla sit amet massa quis, tincidunt efficitur quam. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam vitae commodo eros, non egestas dui. In ultricies, nunc ut gravida consectetur, nisi odio volutpat odio, eu ultricies turpis augue vel eros. Nullam eget tempor sapien, et accumsan nibh.
+                        </div>
+                        <div class="col-xs-12">
+                            <br/>
+                            <hr/>
+                            <br/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <p class="text">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vel quam ut augue vehicula fermentum. Aliquam non lectus vitae arcu accumsan scelerisque at sit amet leo. Cras tincidunt lacus at feugiat auctor. Suspendisse dictum tempor posuere. Nulla sollicitudin dui mi, in blandit velit luctus id. Sed facilisis hendrerit porta. Donec nec lorem id purus molestie vestibulum et quis risus. Duis ac mi fringilla ante ultrices euismod nec id risus.
+                                Morbi imperdiet justo quis leo mollis, nec porta mauris ultrices. Cras faucibus sit amet nisi a porttitor. Aenean neque mauris, vestibulum id facilisis ac, laoreet sit amet turpis. Pellentesque faucibus consequat lorem, malesuada consectetur felis posuere vitae. Proin accumsan, arcu non iaculis elementum, quam massa suscipit tortor, vel convallis erat orci sed arcu. Nulla vestibulum augue at lectus suscipit, sit amet faucibus sem ultricies. Vivamus rhoncus sagittis enim, eget aliquam lectus interdum vel. Proin euismod nisl at lectus ornare sodales. Phasellus non libero id nibh dapibus feugiat.
+                            </p>
+                        </div>
+                        <div class="col-xs-4">
+                            <p class="text">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vel quam ut augue vehicula fermentum. Aliquam non lectus vitae arcu accumsan scelerisque at sit amet leo. Cras tincidunt lacus at feugiat auctor. Suspendisse dictum tempor posuere. Nulla sollicitudin dui mi, in blandit velit luctus id. Sed facilisis hendrerit porta. Donec nec lorem id purus molestie vestibulum et quis risus. Duis ac mi fringilla ante ultrices euismod nec id risus.
+                                Morbi imperdiet justo quis leo mollis, nec porta mauris ultrices. Cras faucibus sit amet nisi a porttitor. Aenean neque mauris, vestibulum id facilisis ac, laoreet sit amet turpis. Pellentesque faucibus consequat lorem, malesuada consectetur felis posuere vitae. Proin accumsan, arcu non iaculis elementum, quam massa suscipit tortor, vel convallis erat orci sed arcu. Nulla vestibulum augue at lectus suscipit, sit amet faucibus sem ultricies. Vivamus rhoncus sagittis enim, eget aliquam lectus interdum vel. Proin euismod nisl at lectus ornare sodales. Phasellus non libero id nibh dapibus feugiat.
+                            </p>
+                        </div>
+                        <div class="col-xs-4">
+                            <p class="text">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vel quam ut augue vehicula fermentum. Aliquam non lectus vitae arcu accumsan scelerisque at sit amet leo. Cras tincidunt lacus at feugiat auctor. Suspendisse dictum tempor posuere. Nulla sollicitudin dui mi, in blandit velit luctus id. Sed facilisis hendrerit porta. Donec nec lorem id purus molestie vestibulum et quis risus. Duis ac mi fringilla ante ultrices euismod nec id risus.
+                                Morbi imperdiet justo quis leo mollis, nec porta mauris ultrices. Cras faucibus sit amet nisi a porttitor. Aenean neque mauris, vestibulum id facilisis ac, laoreet sit amet turpis. Pellentesque faucibus consequat lorem, malesuada consectetur felis posuere vitae. Proin accumsan, arcu non iaculis elementum, quam massa suscipit tortor, vel convallis erat orci sed arcu. Nulla vestibulum augue at lectus suscipit, sit amet faucibus sem ultricies. Vivamus rhoncus sagittis enim, eget aliquam lectus interdum vel. Proin euismod nisl at lectus ornare sodales. Phasellus non libero id nibh dapibus feugiat.
+                            </p>
+                        </div>
+                    </div>
+                    <div style="page-break-after: always;"></div>
+                    <div class="row">
+                        <div class="col-xs-12 text notes">
+                            Así es como luce una tabla con el estilo actual del reporte. Esta nota tiene un estilo de importante.
+                        </div>
+                    </div>
+                    <div style="page-break-after: always;"></div>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <p class="text header">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vel quam ut augue vehicula fermentum. Aliquam non lectus vitae arcu accumsan scelerisque at sit amet leo. Cras tincidunt lacus at feugiat auctor. Suspendisse dictum tempor posuere. Nulla sollicitudin dui mi, in blandit velit luctus id. Sed facilisis hendrerit porta. Donec nec lorem id purus molestie vestibulum et quis risus. Duis ac mi fringilla ante ultrices euismod nec id risus.
+                                Morbi imperdiet justo quis leo mollis, nec porta mauris ultrices. Cras faucibus sit amet nisi a porttitor. Aenean neque mauris, vestibulum id facilisis ac, laoreet sit amet turpis. Pellentesque faucibus consequat lorem, malesuada consectetur felis posuere vitae. Proin accumsan, arcu non iaculis elementum, quam massa suscipit tortor, vel convallis erat orci sed arcu. Nulla vestibulum augue at lectus suscipit, sit amet faucibus sem ultricies. Vivamus rhoncus sagittis enim, eget aliquam lectus interdum vel. Proin euismod nisl at lectus ornare sodales. Phasellus non libero id nibh dapibus feugiat.
+                            </p>
+                        </div>
+                        <div class="col-xs-6">
+                            <p class="text header">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vel quam ut augue vehicula fermentum. Aliquam non lectus vitae arcu accumsan scelerisque at sit amet leo. Cras tincidunt lacus at feugiat auctor. Suspendisse dictum tempor posuere. Nulla sollicitudin dui mi, in blandit velit luctus id. Sed facilisis hendrerit porta. Donec nec lorem id purus molestie vestibulum et quis risus. Duis ac mi fringilla ante ultrices euismod nec id risus.
+                                Morbi imperdiet justo quis leo mollis, nec porta mauris ultrices. Cras faucibus sit amet nisi a porttitor. Aenean neque mauris, vestibulum id facilisis ac, laoreet sit amet turpis. Pellentesque faucibus consequat lorem, malesuada consectetur felis posuere vitae. Proin accumsan, arcu non iaculis elementum, quam massa suscipit tortor, vel convallis erat orci sed arcu. Nulla vestibulum augue at lectus suscipit, sit amet faucibus sem ultricies. Vivamus rhoncus sagittis enim, eget aliquam lectus interdum vel. Proin euismod nisl at lectus ornare sodales. Phasellus non libero id nibh dapibus feugiat.
+                            </p>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <record id="paperformat_letter" model="report.paperformat">
+        <field name="name">Tamaño Carta</field>
+        <field name="default" eval="True" />
+        <field name="format">Letter</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">45</field>
+        <field name="margin_bottom">20</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">45</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="paperformat_letter_landscape" model="report.paperformat">
+        <field name="name">Tamaño Carta Horizontal</field>
+        <field name="default" eval="False"/>
+        <field name="format">Letter</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">45</field>
+        <field name="margin_bottom">20</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">45</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <report
+        id="report_preview_report"
+        model="res.company"
+        string="Vista previa de reportes"
+        report_type="qweb-html"
+        name="report_style_background.report_preview_template"
+        file="report_style_background.report_preview_template"
+    />
+
+    <report
+        id="report_preview_report_landscape"
+        model="res.company"
+        string="Vista previa de reportes"
+        report_type="qweb-html"
+        name="report_style_background.report_preview_template_landscape"
+        file="report_style_background.report_preview_template_landscape"
+    />
+
+    <record id="report_preview_report" model="ir.actions.report.xml">
+        <field name="paperformat_id" ref="paperformat_letter"/>
+    </record>
+
+    <record id="report_preview_report_landscape" model="ir.actions.report.xml">
+        <field name="paperformat_id" ref="paperformat_letter_landscape"/>
+    </record>
+
+</odoo>

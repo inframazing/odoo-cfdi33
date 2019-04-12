@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <odoo>
+        
+        <!-- Tree -->
+        <record id="cfdi_sat_forma_pago_tree" model="ir.ui.view">
+            <field name="name">cfdi.sat.forma.pago.tree</field>
+            <field name="model">sat.forma.pago</field>
+            <field name="arch" type="xml">
+                <tree string="Forma de pago" editable="top">
+                    <field name="active" invisible="True"/>
+                    <field name="code"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        
+        <!-- Actions windows -->
+        <record id="action_cfdi_sat_forma_pago" model="ir.actions.act_window">
+            <field name="name">Forma de Pago</field>
+            <field name="res_model">sat.forma.pago</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+        
+        <!-- Tree -->
+        <record id="cfdi_sat_metodo_pago_tree" model="ir.ui.view">
+            <field name="name">cfdi.sat.metodo.pago.tree</field>
+            <field name="model">sat.metodo.pago</field>
+            <field name="arch" type="xml">
+                <tree string="Método de pago" editable="top">
+                    <field name="active" invisible="True"/>
+                    <field name="code"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        
+        <!-- Actions windows -->
+        <record id="action_cfdi_sat_metodo_pago" model="ir.actions.act_window">
+            <field name="name">Método de Pago</field>
+            <field name="res_model">sat.metodo.pago</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+        
+        <!-- Tree -->
+        <record id="cfdi_sat_uso_cfdi_tree" model="ir.ui.view">
+            <field name="name">cfdi.sat.uso.cfdi.tree</field>
+            <field name="model">sat.uso.cfdi</field>
+            <field name="arch" type="xml">
+                <tree string="Uso de CFDI" editable="top">
+                    <field name="active" invisible="True"/>
+                    <field name="code"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        
+        <!-- Actions windows -->
+        <record id="action_cfdi_sat_uso_cfdi" model="ir.actions.act_window">
+            <field name="name">Uso de CFDI</field>
+            <field name="res_model">sat.uso.cfdi</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+        
+        <!-- Tree -->
+        <record id="cfdi_sat_tipo_relacion_tree" model="ir.ui.view">
+            <field name="name">cfdi.sat.tipo.relacion.tree</field>
+            <field name="model">sat.tipo.relacion</field>
+            <field name="arch" type="xml">
+                <tree string="Tipo de Relación" editable="top">
+                    <field name="active" invisible="True"/>
+                    <field name="code"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        
+        <!-- Actions windows -->
+        <record id="action_cfdi_sat_tipo_relacion" model="ir.actions.act_window">
+            <field name="name">Tipo de Relación</field>
+            <field name="res_model">sat.tipo.relacion</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+    </odoo>

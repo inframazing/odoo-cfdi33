@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <odoo>
+        <template id="payment_report_template">
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="doc_title" t-value="'FOLIO DE PAGO'"/>
+                    <t t-set="doc_name" t-value="o.name or 'SIN FOLIO'"/>
+                    <t t-call="report_style_background.custom_container">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <span class="title">DATOS FISCALES DEL EMISOR</span>
+                                <br/><span t-field="o.company_id.name"/>
+                                <br/> <b>RFC:</b> <span t-field="o.company_id.vat"/>
+                                <br/><b>Dirección:</b> <span t-field="o.company_id.street"/>, <span t-field="o.company_id.street2"/>
+                                <span t-field="o.company_id.zip"/>
+                                <br/><span t-field="o.company_id.city"/>, <span t-field="o.company_id.state_id"/>
+                                <span t-field="o.company_id.country_id"/>
+                                <br/><span t-field="o.company_id.phone"/>
+                            </div>
+                            <div class="col-xs-6">
+                                <span class="title">DATOS FISCALES DEL RECEPTOR</span>
+                                <br/><span t-field="o.partner_id.name"/>
+                                <br/><b>RFC:</b><span t-field="o.partner_id.vat"/>
+                                <t t-if="o.partner_id.street">
+                                    <br/><b>Dirección:</b> <span t-field="o.partner_id.street"/>,<span t-field="o.partner_id.street2"/>
+                                    <span t-field="o.partner_id.zip"/>
+                                    <br/><span t-field="o.partner_id.city"/>, <span t-field="o.partner_id.state_id"/>
+                                    <span t-field="o.partner_id.country_id"/>
+                                    <br/><span t-field="o.partner_id.phone"/>
+                                </t>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <span class="subtitle">Recepción del pago</span>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <b>Fecha Emisión: </b>
+                                        <span t-field="o.fecha_emision" t-field-options='{"widget": "date"}'/>
+                                    </div>
+                                    <div class="col-xs-3">
+                                        <b>Fecha Pago: </b>
+                                        <span t-field="o.fecha_pago" t-field-options='{"widget": "date"}'/>
+                                    </div>
+                                    <div class="col-xs-3">
+                                        <b>Moneda:</b>
+                                       <span t-field="o.currency_id"/>
+                                    </div>
+                                    <div class="col-xs-3">
+                                        <b>Total del pago:</b> <span t-field="o.amount"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="row">  
+                                    <div class="col-xs-12">
+                                        <b>Cantidad con letra:</b>
+                                        <span t-field="o.amount_total_text"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <span class="subtitle">Concepto</span>
+                            </div>
+                            <div class="col-xs-12">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Código</th>
+                                            <th>Cantidad</th>
+                                            <th>Descripción</th>
+                                            <th>Unidad de medida</th>
+                                            <th>Precio Unitario</th>
+                                            <th>Importe</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>84111506</td>
+                                            <td>1</td>
+                                            <td>Pago</td>
+                                            <td>ACT</td>
+                                            <td>$0.00</td>
+                                            <td>$0.00</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <span class="subtitle">Documentos Relacionados</span>
+                            </div>
+                            <div class="col-xs-12">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>UUID Comprobante</th>
+                                            <th>Serie</th>
+                                            <th>Folio</th>
+                                            <th>Moneda</th>
+                                            <th>Parcialidad</th>
+                                            <th>Saldo anterior</th>
+                                            <th>Importe pagado</th>
+                                            <th>Saldo Pendiente</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="o.payment_invoices_ids" t-as="f">
+                                            <tr>
+                                                <td><span class="text-small" t-field="f.uuid"/> </td>
+                                                <td><span t-field="f.serie"/></td>
+                                                <td><span t-field="f.folio"/> </td>
+                                                <td><span t-field="f.currency_id"/> </td>
+                                                <td><span t-field="f.parcialidad"/></td>
+                                                <td align="right"><span t-field="f.saldo_ant"/></td>
+                                                <td align="right"><span t-field="f.pagado"/></td>
+                                                <td align="right"><span t-field="f.saldo"/></td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <t t-if="len(o.canceled_payment_ids) > 0">
+                            <br/>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <span class="subtitle">Pagos Cancelados</span>
+                                </div>
+                                <br/>
+                                <div class="col-xs-12">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Folio</th>
+                                                <th>UUID Comprobante</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="o.canceled_payment_ids" t-as="f">
+                                                <tr>
+                                                    <td><span class="text-small" t-field="f.name"/> </td>
+                                                    <td><span class="text-small" t-field="f.uuid"/> </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </t>
+                        <t t-if="o.cuenta_emisor.acc_number != False">
+                            <br/>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <span class="subtitle">Documentos Bancarios</span>
+                                </div>
+                                <div class="col-xs-12">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Cuenta Emisor</th>
+                                                <th>Banco Emisor</th>
+                                                <th>RFC Emisor</th>
+                                                <th>Número Operación</th>
+                                                <th>Cuenta Beneficiario</th>
+                                                <th>RFC Receptor</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><span t-field="o.cuenta_emisor.acc_number"/> </td>
+                                                <td><span t-field="o.banco_emisor"/></td>
+                                                <td><span t-field="o.rfc_banco_emisor"/> </td>
+                                                <td><span t-field="o.numero_operacion"/> </td>
+                                                <td><span t-field="o.cuenta_beneficiario"/></td>
+                                                <td><span t-field="o.rfc_banco_receptor"/></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </t>
+                        <div class="row" style="page-break-inside: avoid;">
+                            <br/>
+                            <div class="col-xs-6">
+                                <b>Lugar de expedción: </b><span t-field="o.lugar_expedicion"/><br/>
+                                <b>Certificado Emisor: </b><span t-field="o.certificado_emisor"/><br/>
+                                <b>Certificado SAT: </b><span t-field="o.certificado_sat"/><br/>
+                            </div>
+                            <div class="col-xs-6">
+                                <b>UUID: </b><span t-field="o.uuid"/><br/>
+                                <b>Tipo Comprobante: </b>P-Pago<br/>
+                                <b>Concepto: </b><span t-field="o.communication"/><br/>
+                            </div>
+                        </div>
+                        <div class="row" style="page-break-inside: avoid;">
+                            <div class="col-xs-12">
+                                <t t-if="o.cfdi == True">
+                                    <br/>
+                                    <center><p><b>ESTE DOCUMENTO ES UNA REPRESENTACIÓN IMPRESA DE UN CFDI</b></p></center>
+                                    <br/>
+                                </t>
+                                <t t-else="">
+                                    <br/>
+                                    <center><p><b>ESTA IMPRESIÓN NO TIENE VALOR FISCAL</b></p></center>
+                                    <br/>
+                                </t>
+                            </div>
+                            <div class="col-xs-12">
+                                <t t-if="o.cfdi == True">
+                                    <div class="row">
+                                        <div class="col-xs-10 text-super-small" style="font-size: 8px;">
+                                            <b>SELLO DIGITAL DEL CFDI</b><br/>
+                                            <span t-field="o.sello_digital"/><br/>
+                                            <b>SELLO DIGITAL DEL SAT</b><br/>
+                                            <span t-field="o.sello_digital_sat"/><br/>
+                                            <b>Cadena original del comlemento de certificación digital del SAT</b><br/>
+                                            <span t-raw="o.cad_org_tfd.replace('-', '&amp;#8209;')"/><br/>
+                                        </div>
+                                        <div class="col-xs-2" style="text-align:right">
+                                           <img t-if="o.qrcode" t-att-src="'data:image/png;base64,%s' % o.qrcode" style="max-height: 130px;"/>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <report
+            id="cfdi_payment_report"
+            model="account.payment"
+            string="CFDI Complemento de Pago"
+            report_type="qweb-pdf"
+            name="cfdi_invoice.payment_report_template"
+            file="cfdi_invoice.payment_report_template"
+        />
+        
+        <record id="cfdi_payment_report" model="ir.actions.report.xml">
+            <field name="paperformat_id" ref="report_style_background.paperformat_letter"/>
+        </record>
+        
+    </odoo>

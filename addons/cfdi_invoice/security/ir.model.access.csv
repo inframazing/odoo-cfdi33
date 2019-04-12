@@ -1,0 +1,16 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_pac_office_all,pac_config all,model_cfdi_pac_config,,1,0,0,0
+access_branch_office_all,branch_office all,model_company_branch_office,,1,0,0,0
+access_pac_office_admin,pac_config admin,model_cfdi_pac_config,base.group_erp_manager,1,1,1,1
+access_branch_office_admin,branch_office admin,model_company_branch_office,base.group_erp_manager,1,1,1,1
+access_product_sat_category_all,access_product_sat_category_all,model_product_sat_category,,1,0,0,0
+access_product_sat_category,access_product_sat_category,model_product_sat_category,sales_team.group_sale_manager,1,1,1,1
+
+access_sat_forma_pago_all,access_sat_forma_pago_all,model_sat_forma_pago,,1,0,0,0
+access_sat_forma_pago,access_sat_forma_pago,model_sat_forma_pago,,1,0,0,0
+access_sat_metodo_pago_all,access_sat_metodo_pago_all,model_sat_metodo_pago,,1,0,0,0
+access_sat_metodo_pago_all,access_sat_metodo_pago_all,model_sat_metodo_pago,,1,0,0,0
+access_sat_uso_cfdi_all,access_sat_uso_cfdi_all,model_sat_uso_cfdi,,1,0,0,0
+access_sat_uso_cfdi_all,access_sat_uso_cfdi_all,model_sat_uso_cfdi,,1,0,0,0
+access_sat_tipo_relacion_all,access_sat_tipo_relacion_all,model_sat_tipo_relacion,,1,0,0,0
+access_sat_tipo_relacion_all,access_sat_tipo_relacion_all,model_sat_tipo_relacion,,1,0,0,0

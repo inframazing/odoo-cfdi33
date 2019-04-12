@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <odoo>
+      <function name="write" model="ir.model.data">
+          <function name="search" model="ir.model.data">
+              <value eval="[('module', '=', 'account'), ('name', '=', 'email_template_edi_invoice')]"/>
+          </function>
+          <value eval="{'noupdate': False}"/>
+      </function>
+      <record id="account.email_template_edi_invoice" model="mail.template">
+          <field name="report_template" ref="cfdi_invoice.cfdi_invoice_report"/>
+      </record>
+      <function name="write" model="ir.model.data">
+          <function name="search" model="ir.model.data">
+              <value eval="[('module', '=', 'account'), ('name', '=', 'email_template_edi_invoice')]"/>
+          </function>
+          <value eval="{'noupdate': True}"/>
+      </function>
+
+      <data noupdate="1">
+          <record id="email_template_edi_invoice_v2" model="mail.template">
+              <field name="name">Factura - Enviar por correo</field>
+              <field name="email_from">${object.user_id.email}</field>
+              <field name="subject">${object.company_id.name} Factura CFDI (${object.number or ''})</field>
+              <field name="partner_to">${object.partner_id.id}</field>
+              <field name="model_id" ref="account.model_account_invoice"/>
+              <field name="auto_delete" eval="True"/>
+              <field name="report_template" ref="cfdi_invoice.cfdi_invoice_report"/>
+              <field name="report_name">
+                  Factura_${(object.number or '').replace('/','_')}_${object.state == 'draft' and 'draft' or ''}
+              </field>
+              <field name="body_html"><![CDATA[
+                  <table width="400" border="0" cellpadding="0" cellspacing="0" align="center" style="-webkit-border-radius: 6px; -moz-border-radius: 6px; border-radius: 6px;">
+                     <tbody>
+                        <tr>
+                           <td width="100%" style="-webkit-border-radius: 6px; -moz-border-radius: 6px; border-radius: 6px; -webkit-box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.75); -moz-box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.75); box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.10);" bgcolor="#ffffff">
+                              <table width="400" border="0" cellpadding="0" cellspacing="0" align="center" bgcolor="#ffffff" style="-webkit-border-top-right-radius: 6px; -moz-border-top-right-radius: 6px; border-top-right-radius: 6px; -webkit-border-top-left-radius: 6px; -moz-border-top-left-radius: 6px; border-top-left-radius: 6px;">
+                                 <tbody>
+                                    <tr>
+                                       <td width="100%" valign="middle" align="center">
+                                          <table width="300" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
+                                             <tbody>
+                                                <tr>
+                                                   <td width="100%" height="20" style="font-size: 1px; line-height: 1px;">&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                   <td width="100%" style="width:329px; height:auto;">
+                                                      <img src="${'%s/logo.png'%(object.env['ir.config_parameter'].get_param('web.base.url'))}" border="0">
+                                                   </td>
+                                                </tr>
+                                                <tr>
+                                                   <td width="100%" height="50" style="font-size: 1px; line-height: 1px;">&nbsp;</td>
+                                                </tr>
+                                             </tbody>
+                                          </table>
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                              <table width="400" border="0" cellpadding="0" cellspacing="0" align="center" bgcolor="#ffffff">
+                                 <tbody>
+                                    <tr>
+                                       <td width="100%" valign="middle" align="center">
+                                          <table width="300" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
+                                             <tbody>
+                                                <tr>
+                                                   <td valign="middle" width="100%" style="text-align: center; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 20px;">
+                                                      <span style="color: rgb(1, 109, 56);">${object.partner_id.name}</span>
+                                                   </td>
+                                                </tr>
+                                             </tbody>
+                                          </table>
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                              <table width="400" border="0" cellpadding="0" cellspacing="0" align="center" bgcolor="#ffffff">
+                                 <tbody>
+                                    <tr>
+                                       <td width="100%" valign="middle" align="center">
+                                          <table width="300" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
+                                             <tbody>
+                                                <tr>
+                                                   <td width="100%" height="30" style="font-size: 1px; line-height: 1px;">&nbsp;</td>
+                                                </tr>
+                                             </tbody>
+                                          </table>
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                              <table width="400" border="0" cellpadding="0" cellspacing="0" align="center" bgcolor="#ffffff">
+                                 <tbody>
+                                    <tr>
+                                       <td width="100%" valign="middle" align="center">
+                                          <table width="300" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
+                                             <tbody>
+                                                <tr>
+                                                   <td width="100%" align="center">
+                                                      <table border="0" cellpadding="0" cellspacing="0" align="center">
+                                                         <tbody>
+                                                            <tr>
+                                                               <td align="center" height="40" bgcolor="#94da43" style="border-top-left-radius: 5px;border-top-right-radius: 5px;border-bottom-right-radius: 5px;border-bottom-left-radius: 5px;padding-left: 30px;padding-right: 30px;font-family: 'Lato', Helvetica, Arial, sans-serif;color: white;font-size: 16px;font-weight: 400;line-height: 1px;background-color: rgba(1,109,56,1);"><b>${object.name or 'Factura CFDI'}
+                                                                  </b>
+                                                               </td>
+                                                            </tr>
+                                                         </tbody>
+                                                      </table>
+                                                   </td>
+                                                </tr>
+                                             </tbody>
+                                          </table>
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                              <table width="400" border="0" cellpadding="0" cellspacing="0" align="center" bgcolor="#ffffff">
+                                 <tbody>
+                                    <tr>
+                                       <td width="100%" valign="middle" align="center">
+                                          <table width="300" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
+                                             <tbody>
+                                                <tr>
+                                                   <td width="100%" height="25" style="font-size: 1px; line-height: 1px;">&nbsp;</td>
+                                                </tr>
+                                             </tbody>
+                                          </table>
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                              <table width="400" border="0" cellpadding="0" cellspacing="0" align="center" bgcolor="#ffffff">
+                                 <tbody>
+                                    <tr>
+                                       <td width="100%" valign="middle" align="center">
+                                          <table width="300" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
+                                             <tbody>
+                                                <tr>
+                                                   <td valign="middle" width="100%" style="text-align: left; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; color: rgb(134, 133, 133); line-height: 24px; font-weight: 400;">Hacemos de su conocimiento que se ha generado un comprobante fiscal con instrucciones de envío a su cuenta de correo electrónico.</td>
+                                                </tr>
+                                                <tr>
+                                                   <td width="100%" height="30" style="font-size: 1px; line-height: 1px;">&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                   <td valign="middle" width="100%" style="text-align: left; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; color: rgb(134, 133, 133); line-height: 24px; font-weight: 400;">Encontrará los detalles en el documento adjunto.</td>
+                                                </tr>
+                                             </tbody>
+                                          </table>
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                              <table width="400" border="0" cellpadding="0" cellspacing="0" align="center" bgcolor="#ffffff">
+                                 <tbody>
+                                    <tr>
+                                       <td width="100%" valign="middle" align="center">
+                                          <table width="300" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
+                                             <tbody>
+                                                <tr>
+                                                   <td width="100%" height="30" style="font-size: 1px; line-height: 1px;">&nbsp;</td>
+                                                </tr>
+                                             </tbody>
+                                          </table>
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                              <table width="400" border="0" cellpadding="0" cellspacing="0" align="center" bgcolor="#ffffff" style="-webkit-border-bottom-right-radius: 6px; -moz-border-bottom-right-radius: 6px; border-bottom-right-radius: 6px; -webkit-border-bottom-left-radius: 6px; -moz-border-bottom-left-radius: 6px; border-bottom-left-radius: 6px;">
+                                 <tbody>
+                                    <tr>
+                                       <td width="100%" valign="middle" align="center">
+                                          <table width="300" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
+                                             <tbody>
+                                                <tr>
+                                                   <td width="100%" height="50" style="font-size: 1px; line-height: 1px;">&nbsp;</td>
+                                                </tr>
+                                             </tbody>
+                                          </table>
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>]]>
+              </field>
+          </record>
+      </data>
+  </odoo>

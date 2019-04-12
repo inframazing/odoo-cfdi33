@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <odoo>
+        
+        <!-- Form -->
+        <record id="account_payment_invoice_simple_form" model="ir.ui.view">
+            <field name="name">account.payment.invoice.simple.form</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_invoice_form"/>
+            <field name="arch" type="xml">
+                <field name="payment_date" position="before">
+                    <field name="fecha_emision" string="Fecha de Emision"/>
+                    <field name="fecha_pago" string="Fecha de Pago"/>
+                    <field name="canceled_payment_ids" options="{'no_create': True, 'no_open': True}" widget="many2many_tags" domain="[('partner_id','=', partner_id), ('id', '!=', id), ('state', '=', 'cancelled'), ('cfdi', '=', True)]"/>
+                    <field name="cuenta_emisor" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state','!=', 'draft')]}" domain="[('partner_id','=', partner_id)]"/>
+                    <field name="banco_emisor"/>
+                    <field name="rfc_banco_emisor"/>
+                    <field name="numero_operacion"/>
+                </field>
+                <field name="payment_date" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                    <button name="post" position="after">
+                        <button string='Validar y Ver Pago' 
+                            attrs="{'invisible':['|',('partner_type','!=','customer')]}" 
+                            name="validate_complete_payment" 
+                            type="object" 
+                            class="btn-primary"/>
+                    </button>
+            </field>
+        </record>
+
+        <!-- Form -->
+        <record id="view_account_payment_from_invoices_inherit" model="ir.ui.view">
+            <field name="name">account.register.payments.wizard</field>
+            <field name="model">account.register.payments</field>
+            <field name="inherit_id" ref="account.view_account_payment_from_invoices"/>
+            <field name="arch" type="xml">
+                <field name="payment_date" position="before">
+                    <field name="fecha_emision" string="Fecha de Emision"/>
+                    <field name="fecha_pago" string="Fecha de Pago"/>
+                    <field name="canceled_payment_ids" options="{'no_create': True, 'no_open': True}" widget="many2many_tags" domain="[('partner_id','=', partner_id), ('id', '!=', id)]"/>
+                    <field name="cuenta_emisor" options="{'no_create': True, 'no_open': True}" domain="[('partner_id','=', partner_id)]"/>
+                    <field name="banco_emisor"/>
+                    <field name="rfc_banco_emisor"/>
+                    <field name="numero_operacion"/>
+                </field>
+                <field name="payment_date" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+            </field>
+        </record>
+        
+        <!-- Tree -->
+        <record id='inherit_view_account_payment_tree' model='ir.ui.view'>
+            <field name='name'>account.payment</field>
+            <field name='model'>account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_tree"/>
+            <field name='arch' type='xml'>
+                <field name="state" position="after">
+                    <field name="cfdi" string="CFDI"/>
+                </field>
+            </field>
+        </record>
+
+        <!-- Search -->
+        <record id="inherit_view_account_payment_search" model="ir.ui.view">
+            <field name="name">account.payment</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_search"/>
+            <field name="arch" type="xml">
+                <filter position="after">
+                    <separator/>
+                        <filter name="cfdi" string="Timbradas" domain="[('cfdi', '=', True)]"/>
+                        <filter name="not_cfdi" string="Sin timbrar" domain="[('cfdi', '=', False)]"/>
+                    <separator/>
+                </filter>
+            </field>
+        </record>
+
+        <!-- Form -->
+        <record id="account_payment_simple_form_v2" model="ir.ui.view">
+            <field name="name">Recibo Electrónico de Pagos</field>
+            <field name="model">account.payment</field>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="post" type="object" class="oe_highlight" states="draft" string="Validar"/>
+                        <button name="sent_email" type="object" class="oe_highlight" attrs="{'invisible':['|',('cfdi','=',False),('state','in',('draft','cancelled'))]}" string="Enviar por correo electrónico"></button>
+                        <button name="timbrar" type="object" class="oe_highlight" attrs="{'invisible':['|',('cfdi','=',True),('state','in',('draft','cancelled'))]}" string="Timbrar CFDI"/>
+                        <button name="action_cancel" type="object" attrs="{'invisible':[('state','=','cancelled')]}" string="Cancelar"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,posted,cancelled"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="download_xml" 
+                                type="object" 
+                                class="oe_stat_button" 
+                                icon="fa-file-text-o"
+                                string="Descargar XML" 
+                                attrs="{'invisible': [('cfdi','=',False)]}"/>
+                            
+                            <button name="%(cfdi_invoice.cfdi_payment_report)d" 
+                                type="action" class="oe_stat_button"
+                                icon="fa-file-pdf-o"
+                                string="Descargar PDF" 
+                                attrs="{'invisible': [('cfdi','=',False)]}"/>
+                        </div>
+                        <field name="qrcode" class="oe_avatar" widget="image"/>
+                        <div class="oe_title">
+                            <label for="name" string="Folio del Recibo"/>
+                            <h2><field name="name"/></h2>
+                            <label for="uuid" string="Folio Fiscal" attrs="{'invisible': [('cfdi', '=', False)]}"/>
+                            <field name="uuid" attrs="{'invisible': [('cfdi', '=', False)]}"/>
+                            <h3><span attrs="{'invisible': [('cfdi', '=', True)]}">Sin Valor Fiscal</span></h3>
+                        </div>
+                        <field name="cfdi" invisible="1"/>
+                        <group>
+                            <field name="amount_total_text"/>
+                            <group>
+                                <field name="partner_id" attrs="{'readonly': [('state','!=', 'draft')]}" />
+                                <field name="journal_id" attrs="{'readonly': [('state','!=', 'draft')]}" string="Cuenta Bancaria Destino"/>
+                                <label for="amount" string="Importe"/>
+                                <div name="amount_div" class="o_row">
+                                    <field name="amount" attrs="{'readonly': [('state','!=', 'draft')]}" widget="currency"/>
+                                    <field name="currency_id" attrs="{'readonly': [('state','!=', 'draft')]}" options="{'no_create': True, 'no_open': True}" groups="base.group_multi_currency"/>
+                                </div>
+                            </group>
+                            <group>
+                                <field name="fecha_emision" attrs="{'readonly': [('state','!=', 'draft')]}" string="Fecha de Emisión"/>
+                                <field name="fecha_pago" attrs="{'readonly': [('state','!=', 'draft')]}" string="Fecha de Pago"/>
+                                <field name="payment_date" attrs="{'readonly': [('state','!=', 'draft')]}" string="Fecha Contable"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="forma_pago"/>
+                                <field name="uso_cfdi"/>
+                                <field name="id" invisible="1"/>
+                                <field name="canceled_payment_ids" widget="many2many_tags" domain="[('partner_id','=', partner_id), ('id', '!=', id), ('state', '=', 'cancelled'), ('cfdi', '=', True)]" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            </group>
+                            <group>
+                                <field name="cfdi"/>
+                                <field name="fecha_timbrado"/>
+                                <field name="lugar_expedicion"/>
+                                <field name="canceled_payment"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Cuenta Ordenante">
+                              <field name="cuenta_emisor" attrs="{'readonly': [('state','!=', 'draft')]}" domain="[('partner_id','=', partner_id)]"/>
+                              <field name="banco_emisor"/>
+                              <field name="rfc_banco_emisor"/>
+                            </group>
+                            <group string="Cuenta Beneficiario">
+                              <field name="numero_operacion" attrs="{'readonly': [('state','!=', 'draft')]}" />
+                              <field name="banco_receptor"/>
+                              <field name="cuenta_beneficiario"/>
+                              <field name="rfc_banco_receptor"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Facturas Pagadas">
+                                <field name="invoice_ids"/>
+                            </page>
+                            <page string="Documentos Relacionados" attrs="{ 'cfdi': True }">
+                                <field name="payment_invoices_ids" readonly="True" colspan="4">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="uuid"/>
+                                        <field name="metodo_pago"/>
+                                        <field name="currency_id"/>
+                                        <field name="parcialidad"/>
+                                        <field name="saldo_ant"/>
+                                        <field name="pagado"/>
+                                        <field name="saldo"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Contabilidad">
+                                <field name="move_ids"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--Server action-->
+        <record id="verificar_factura_payment" model="ir.actions.server">
+            <field name="name">Verificar SAT</field>
+            <field name="model_id" ref="model_account_payment"/>
+            <field name="condition">True</field>
+            <field name="type">ir.actions.server</field>
+            <field name="state">code</field>
+            <field name="code">action = env["account.payment"].ConsultaCFDIServicePayment(context.get('active_ids',[]))</field>
+            <field name="multi">True</field>
+        </record>
+
+        <!--Ir values-->
+        <record id="action_verificar_factura_payment_value" model="ir.values">
+            <field name="name">Verificar SAT</field>
+            <field name="action_id" ref="verificar_factura_payment"/>
+            <field name="value" eval="'ir.actions.server,' + str(ref('verificar_factura_payment'))"/>
+            <field name="key">action</field>
+            <field name="model_id" ref="model_account_payment"/>
+            <field name="model">account.payment</field>
+            <field name="key2">client_action_multi</field>
+            <field name="domain">[(cfdi,'=','timbrado')]</field>
+        </record>
+        
+        <!-- Act window -->
+        <record id="action_account_payments_v2" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="cfdi_invoice.account_payment_simple_form_v2"/>
+            <field name="act_window_id" ref="account.action_account_payments"/>
+        </record>
+        
+        <!-- Act window -->
+        <record id="action_account_payments_tree_v2" model="ir.actions.act_window.view">
+            <field name="sequence" eval="0"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="account.view_account_payment_tree"/>
+            <field name="act_window_id" ref="account.action_account_payments"/>
+        </record>
+
+    </odoo>

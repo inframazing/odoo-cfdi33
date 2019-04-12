@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <odoo>
+        <data noupdate="1">
+
+            <record id="sat_tipo_relacion_01" model="sat.tipo.relacion">
+                <field name="code">01</field>
+                <field name="name">Nota de crédito de los documentos relacionados</field>
+            </record>
+
+            <record id="sat_tipo_relacion_02" model="sat.tipo.relacion">
+                <field name="code">02</field>
+                <field name="name">Nota de débito de los documentos relacionados</field>
+            </record>
+
+            <record id="sat_tipo_relacion_03" model="sat.tipo.relacion">
+                <field name="code">03</field>
+                <field name="name">Devolución de mercancía sobre facturas o traslados previos</field>
+            </record>
+
+            <record id="sat_tipo_relacion_04" model="sat.tipo.relacion">
+                <field name="code">04</field>
+                <field name="name">Sustitución de los CFDI previos</field>
+            </record>
+
+            <record id="sat_tipo_relacion_05" model="sat.tipo.relacion">
+                <field name="code">05</field>
+                <field name="name">Traslados de mercancías facturados previamente</field>
+            </record>
+
+            <record id="sat_tipo_relacion_06" model="sat.tipo.relacion">
+                <field name="code">06</field>
+                <field name="name">Factura generada por los traslados previos</field>
+            </record>
+
+            <record id="sat_tipo_relacion_07" model="sat.tipo.relacion">
+                <field name="code">07</field>
+                <field name="name">CFDI por aplicación de anticipo</field>
+            </record>
+
+            <record id="sat_tipo_relacion_08" model="sat.tipo.relacion">
+                <field name="code">08</field>
+                <field name="name">Factura generada por pagos en parcialidades</field>
+            </record>
+
+            <record id="sat_tipo_relacion_09" model="sat.tipo.relacion">
+                <field name="code">09</field>
+                <field name="name">Factura generada por pagos diferidos</field>
+            </record>
+
+        </data>
+    </odoo>

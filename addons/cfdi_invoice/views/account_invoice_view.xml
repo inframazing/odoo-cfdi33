@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <odoo>
+
+        <!-- Form -->
+        <record id="cfdi_invoice_view_form" model="ir.ui.view">
+            <field name="name">cfdi.invoice.view.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <button name="action_invoice_open" position="after">
+                    <button name="timbrar" type="object"
+                            class="oe_highlight"
+                            string="Timbrar CFDI"
+                            attrs="{'invisible': ['|', ('cfdi', '=', True), ('state', 'not in', ['open', 'paid'])]}"
+                            groups="cfdi_invoice.account_invoice_cfdi33_timbrar"/>
+                </button>
+                <field name="number" position="before">
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(cfdi_invoice.cfdi_invoice_report)d"
+                                type="action"
+                                class="oe_stat_button"
+                                icon="fa-file-pdf-o"
+                                string="Descargar PDF"
+                                attrs="{'invisible': [('cfdi','=',False)]}"/>
+
+                        <button name="download_xml"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-file-text-o"
+                                string="Descargar XML"
+                                attrs="{'invisible': [('cfdi','=',False)]}"/>
+
+                        <button name="download_acuse"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-file-text-o"
+                                string="Descargar Acuse"
+                                attrs="{'invisible': ['|', ('cfdi','=',False), ('state', 'not in', ['cancel'])]}"/>
+                    </div>
+                </field>
+                <field name="date_invoice" position="after">
+                    <field name="fecha_cancelacion"
+                           attrs="{'invisible': ['|', ('cfdi','=',False), ('state', 'not in', ['cancel'])]}"/>
+                </field>
+                <field name="currency_id" position="after">
+                    <field name="currency_exchange" widget="monetary"/>
+                </field>
+                <field name="partner_id" position="after">
+                    <field name="partner_vat" invisible="1"/>
+                    <field name="invoice_partner" attrs="{'invisible': [('partner_vat', '!=', 'XAXX010101000')]}"/>
+                </field>
+                <notebook position="before">
+                    <group string="Datos del CFDI">
+                        <group>
+                            <field name="tipo_comprobante" invisible="True"/>
+                            <field name="metodo_pago" required="True" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="forma_pago" required="True" options="{'no_create': True, 'no_open': True}"/>
+                        </group>
+                        <group>
+                            <field name="uso_cfdi" required="True" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="cfdi" string="Timbrado" readonly="True"/>
+                            <field name="status_cancelacion" attrs="{'invisible': ['|', ('cfdi','=',False), ('state', 'not in', ['cancel'])]}"/>
+                        </group>
+                    </group>
+                </notebook>
+                <page name="other_info" position="after">
+                    <page string="CFDIs Relacionados" name="cfdis_relacionados">
+                        <group>
+                            <field name="tipo_relacion"
+                                   options="{'no_create': True, 'no_open': True}"
+                                   attrs="{'readonly': [('cfdi', '=', True)]}"/>
+                        </group>
+                        <field name="cfdis_relacionados"
+                               domain="[('cfdi', '=', True), ('type','=','out_invoice')]"
+                               attrs="{'readonly': [('cfdi', '=', True)]}">
+                            <tree>
+                                <field name="cfdi" invisible="True"/>
+                                <field name="state" invisible="True"/>
+                                <field name="uuid"/>
+                                <field name="number"/>
+                                <field name="partner_id" string="Cliente"/>
+                                <field name="date_invoice"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Datos del CFDI" name="cfdi_data" attrs="{'invisible': [('cfdi', '=', False)]}">
+                        <group>
+                            <group>
+                                <field name="usuario_timbrado"/>
+                                <field name="fecha_timbrado"/>
+                                <field name="uuid"/>
+                            </group>
+                            <group>
+                                <field name="qrcode" widget="image"/>
+                                <field name="xml_name" invisible="True"/>
+                                <field name="xml_cfdi" filename="xml_name"/>
+                            </group>
+                        </group>
+                    </page>
+                    <page string="Debug XML" groups="base.group_no_one">
+                        <div style="word-wrap: break-word;">
+                            <field name="debug_xml"/>
+                        </div>
+                    </page>
+                </page>
+            </field>
+        </record>
+
+        <!-- Form -->
+        <record id="invoice_form_cancel_groups" model="ir.ui.view">
+            <field name="name">cfdi.invoice.view.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account_cancel.invoice_form_cancel_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_invoice_cancel']" position="attributes">
+                     <attribute name="groups">cfdi_invoice.account_invoice_cfdi33_cancelar</attribute>
+                     <attribute name="confirm">¿ Realmente desea cancelar la Factura ?</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="timbrar_facturas" model="ir.actions.server">
+            <field name="name">Timbrado masivo</field>
+            <field name="model_id" ref="model_account_invoice"/>
+            <field name="condition">True</field>
+            <field name="type">ir.actions.server</field>
+            <field name="state">code</field>
+            <field name="code">action = env["account.invoice"].timbrar_masivo(context.get('active_ids',[]))</field>
+            <field name="multi">True</field>
+        </record>
+
+        <!--Ir values-->
+        <record id="action_timbrar_factura_value" model="ir.values">
+            <field name="name">Timbrado masivo</field>
+            <field name="action_id" ref="timbrar_facturas"/>
+            <field name="value" eval="'ir.actions.server,' + str(ref('timbrar_facturas'))"/>
+            <field name="key">action</field>
+            <field name="model_id" ref="model_account_invoice"/>
+            <field name="model">account.invoice</field>
+            <field name="key2">client_action_multi</field>
+        </record>
+
+        <!-- Tree -->
+        <record id="cfdi_invoice_view_tree" model="ir.ui.view">
+            <field name="name">cfdi.invoice.view.tree</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_tree"/>
+            <field name="arch" type="xml">
+                <field name="state" position="after">
+                    <field name="cfdi" string="CFDI"/>
+                </field>
+                <field name="residual_signed" position="after">
+                    <field name="amount_untaxed_signed" string="Total Pesos" sum="total pesos"/>
+                </field>
+            </field>
+        </record>
+
+        <!-- Search -->
+        <record id="cfdi_invoice_view_search" model="ir.ui.view">
+            <field name="name">cfdi.invoice.view.search</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+            <field name="arch" type="xml">
+                <filter name="refunds" position="after">
+                    <separator/>
+                    <filter name="cfdi" string="Timbradas" domain="[('cfdi', '=', True)]"/>
+                    <filter name="not_cfdi" string="Sin timbrar" domain="[('cfdi', '=', False)]"/>
+                </filter>
+            </field>
+        </record>
+        
+        <!-- action windows -->
+        <record id="credit_note_action" model="ir.actions.act_window">
+            <field name="name">Notas de crédito</field>
+            <field name="res_model">account.invoice</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+             <field eval="False" name="view_id"/>
+            <field name="domain">[('type','=','out_refund')]</field>
+            <field name="context">{'default_type':'out_refund', 'type':'out_refund', 'journal_type': 'sale_refund'}</field>
+            <field name="search_view_id" ref="account.view_account_invoice_filter"/>
+        </record>
+        
+        <!-- action windows -->
+        <record id="account.action_invoice_tree1" model="ir.actions.act_window">
+            <field name="context">{'default_type':'out_invoice', 'type':'out_invoice', 'journal_type': 'sale'}</field>
+            <field name="domain">[('type','=','out_invoice')]</field>
+        </record>
+
+        <!-- action windows -->
+        <record id="credit_note_action_view1" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="account.invoice_tree"/>
+            <field name="act_window_id" ref="credit_note_action"/>
+        </record>
+        
+        <!-- action windows -->
+        <record id="credit_note_action_view2" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="account.invoice_form"/>
+            <field name="act_window_id" ref="credit_note_action"/>
+        </record>
+        
+        <!-- menuitem -->
+        <menuitem 
+            id="credit_note_menu" 
+            name="Notas de crédito" 
+            parent="account.menu_finance_receivables" 
+            sequence="1" 
+            action="credit_note_action"/>
+
+    </odoo>

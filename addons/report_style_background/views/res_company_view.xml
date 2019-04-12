@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="res_company_view_form" model="ir.ui.view">
+        <field name="name">res.company.view.form</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <page position="after">
+                <page string="Report Background">
+                    <group>
+                        <group>
+                            <button name="%(report_style_background.report_preview_report)d" string="Vista Previa" type="action" class="oe_highlight"/>
+                            <button name="%(report_style_background.report_preview_report_landscape)d" string="Vista Previa Horizontal" type="action" class="oe_highlight"/>
+                        </group>
+                        <group></group>
+                    </group>
+                    <group string="Paleta de colores">
+                        <group>
+                            <field name="color_primary" widget="colorpicker"/>
+                            <field name="color_secondary" widget="colorpicker"/>
+                            <field name="color_title" widget="colorpicker"/>
+                        </group>
+                        <group>
+                            <field name="color_text" widget="colorpicker"/>
+                            <field name="color_highlight" widget="colorpicker"/>
+                            <field name="color_important" widget="colorpicker"/>
+                        </group>
+                    </group>
+                    <group string="Imagen de fondo">
+                        <field name="opacity"/>
+                        <field name="paper"/>
+                        <field name="paper_landscape"/>
+                        <field name="background_image" widget="image" style="max-width: 200px;"/>
+                        <field name="background" string="Imagen con degradado y ajuste" widget="image" style="max-width: 300px;"/>
+                        <field name="background_landscape" string="Imagen con degradado y ajuste" widget="image" style="max-width: 300px;"/>
+                        <field name="x" invisible="True"/>
+                        <field name="y" invisible="True"/>
+                        <field name="x_l" invisible="True"/>
+                        <field name="y_l" invisible="True"/>
+                    </group>
+                </page>
+            </page>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+    <odoo>
+        
+        <!-- Form -->
+        <record id="remove_vat_view_partner_form" model="ir.ui.view">
+            <field name="name">remove.vat.view.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base_vat.view_partner_form"/>
+            <field name="arch" type="xml">
+                <field name="vat" position="replace"></field>
+                <label for="vat" position="replace"></label>
+            </field>
+        </record>
+        
+        <!-- Tree --> 
+        <record id="view_partner_tree_vat" model="ir.ui.view">
+            <field name="name">res.partner.tree</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_tree"></field>
+            <field name="arch" type="xml">
+                <field name="display_name" position="after">
+                    <field name="vat"/>
+                </field>
+            </field>
+        </record>       
+
+        <!-- Form -->
+        <record id="view_partner_form" model="ir.ui.view">
+            <field name="name">res.partner.form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <h3><field name="vat" placeholder="RFC del Cliente o Proveedor" required="True"/></h3>
+                </field>
+                <notebook position="inside">
+                    <page string="CFDI">
+                        <group>
+                            <group>
+                                <field name="forma_pago"/>
+                                <field name="metodo_pago"/>
+                            </group>
+                            <group>
+                                <field name="uso_cfdi"/>
+                            </group>
+                        </group>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+    </odoo>

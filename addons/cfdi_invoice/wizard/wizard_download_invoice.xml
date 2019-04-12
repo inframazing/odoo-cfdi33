@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <odoo>
+        
+        <record model="ir.ui.view" id="download_invoices_wizard_form">
+            <field name="name">Asistente para descarga de facturas</field>
+            <field name="model">wizard.cfdi_download_invoice</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Asistente para descarga de facturas">
+                    <group>
+                        <field name="busqueda"/>
+                        <field name="rfc" attrs="{'invisible': [('busqueda', '!=', 'rfc')], 'required': [('busqueda', '=', 'rfc')]}"/>
+                        <field name="folio" attrs="{'invisible': [('busqueda', '!=', 'folio')], 'required': [('busqueda', '=', 'folio')]}"/>
+                        <field name="cliente" attrs="{'invisible': [('busqueda', '!=', 'cliente')], 'required': [('busqueda', '=', 'cliente')]}" options="{'no_create': True, 'no_open': True}"/>
+                        <field name="fecha_inicio" attrs="{'invisible': [('busqueda', '!=', 'fechas')], 'required': [('busqueda', '=', 'fechas')]}"/>
+                        <field name="fecha_fin" attrs="{'invisible': [('busqueda', '!=', 'fechas')], 'required': [('busqueda', '=', 'fechas')]}"/>
+                    </group>
+                    <footer>
+                        <button string="Cancel" special="cancel" class="oe_highlight"/>
+                        <button name="download_zip" string="Descargar" type="object" class="oe_highlight"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_download_invoices_wizard" model="ir.actions.act_window">
+            <field name="name">Asistente para descarga de facturas</field>
+            <field name="res_model">wizard.cfdi_download_invoice</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="download_invoices_wizard_form"/>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem 
+            id="menu_finance_receivables_download" 
+            name="Descarga de facturas" 
+            parent="account.menu_finance_receivables" 
+            action="action_download_invoices_wizard" sequence="200"/>
+    
+    </odoo>

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <odoo>
+        
+        <!-- Form -->
+        <record id="product_template_form_view" model="ir.ui.view">
+            <field name="name">product.template.form.inherit</field>
+            <field name="model">product.template</field>
+            <field name="priority">5</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <field name="categ_id" position="after">
+                    <field name="sat_category" required="True"/>
+                </field>
+            </field>
+        </record>
+
+        <!-- Tree -->
+        <record id="product_template_tree_view_sat_category" model="ir.ui.view">
+            <field name="name">product.template.product.tree</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_tree_view"/>
+            <field name="arch" type="xml">
+                <field name="default_code" position="after">
+                    <field name="sat_category" required="True"/>
+                </field>
+            </field>
+        </record>
+
+        <!-- Form -->
+        <record id="product_uom_form_view" model="ir.ui.view">
+            <field name="name">product.uom.form.view</field>
+            <field name="model">product.uom</field>
+            <field name="inherit_id" ref="product.product_uom_form_view"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="sat_code"/>
+                </field>
+                <field name="rounding" position="after">
+                    <div colspan="2">
+                        <h3>
+                            <a href="http://200.57.3.89/PyS/catUnidades.aspx" target="_blank">Click aquí para Consultar catálogo del SAT</a>
+                        </h3>
+                    </div>
+                </field>
+            </field>
+        </record>
+
+        <!-- Tree -->
+        <record id="product_uom_tree_view" model="ir.ui.view">
+            <field name="name">product.uom.tree.view</field>
+            <field name="model">product.uom</field>
+            <field name="inherit_id" ref="product.product_uom_tree_view"/>
+            <field name="arch" type="xml">
+                <field name="uom_type" position="after">
+                    <field name="active" invisible="True"/>
+                </field>
+            </field>
+        </record>
+
+        <!-- Form -->
+        <record id="product_uom_categ_form_view" model="ir.ui.view">
+            <field name="name">product.uom.categ.tree.view</field>
+            <field name="model">product.uom.categ</field>
+            <field name="inherit_id" ref="product.product_uom_categ_form_view"/>
+            <field name="arch" type="xml">
+                <field name="name" position="replace">
+                    <field name="name"/>
+                    <field name="active"/>
+                </field>
+            </field>
+        </record>
+
+        <!-- Tree -->
+        <record id="product_uom_categ_tree_view" model="ir.ui.view">
+            <field name="name">product.uom.categ.tree.view</field>
+            <field name="model">product.uom.categ</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="active"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Form -->
+        <record id="product_sat_category_form_view" model="ir.ui.view">
+            <field name="name">product.sat.category.form.view</field>
+            <field name="model">product.sat.category</field>
+            <field name="arch" type="xml">
+                <form string="Categoría de Producto o Servicio del SAT">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                                <field name="active" widget="boolean_button" options="{&quot;terminology&quot;: &quot;archive&quot;}"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1><field name="name" placeholder="Nombre del producto o servicio"/></h1>
+                            <label for="code"/><h2><field name="code" placeholder="Ej. 23221002"/></h2>
+                            <label for="type"/><h2><field name="type"/></h2>
+                        </div>
+                        <div colspan="2">
+                            <h3>
+                                <a href="http://200.57.3.89/PyS/catPyS.aspx" target="_blank">Click aquí para Consultar catálogo del SAT</a>
+                            </h3>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree -->
+        <record id="product_sat_category_tree_view" model="ir.ui.view">
+            <field name="name">product.sat.category.tree.view</field>
+            <field name="model">product.sat.category</field>
+            <field name="arch" type="xml">
+                <tree string="Catálogo de productos y servicios del SAT">
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="type"/>
+                    <field name="active" invisible="True"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Form -->
+        <record id="product_category_sat_form_view" model="ir.ui.view">
+            <field name="name">product.category.sat.form.view</field>
+            <field name="model">product.category</field>
+            <field name="inherit_id" ref="product.product_category_form_view"/>
+            <field name="arch" type="xml">
+                <group name="first" position="before">
+                    <group name="sat_code" string="Categoría SAT">
+                        <field name="sat_category"/>
+                    </group>
+                </group>
+            </field>
+        </record>
+
+        <!-- Action windows -->
+        <record id="action_product_sat_category" model="ir.actions.act_window">
+            <field name="name">Catálogo de Productos SAT</field>
+            <field name="res_model">product.sat.category</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Menuitem -->
+        <menuitem id="menu_action_product_sat_category" parent="sale.prod_config_main" action="action_product_sat_category" sequence="3"/>
+
+    </odoo>

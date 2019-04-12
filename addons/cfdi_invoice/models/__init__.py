@@ -1,0 +1,11 @@
+import sat_catalogo
+import res_company
+import pac_config
+import company_branch_office
+import res_partner
+import product
+import account_tax
+import account_invoice
+import account_payment
+import sale
+import mail_template

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <odoo>
+        <data noupdate="1">
+
+            <record id="sat_metodo_pago_PUE" model="sat.metodo.pago">
+                <field name="code">PUE</field>
+                <field name="name">Pago en una sola exhibición</field>
+            </record>
+
+            <record id="sat_metodo_pago_PPD" model="sat.metodo.pago">
+                <field name="code">PPD</field>
+                <field name="name">Pago en parcialidades o diferido</field>
+            </record>
+
+        </data>
+    </odoo>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<odoo>
+	    
+	    <!-- Menuitem -->
+	    <menuitem id="cfdi_catalogo_sat" parent="account.menu_finance_configuration" name="Catálogos del SAT"/>
+	    <menuitem id="cfdi_catalogo_sat_productos_serv" parent="cfdi_catalogo_sat" action="action_product_sat_category"/>
+	    <menuitem id="cfdi_catalogo_sat_forma_pago" parent="cfdi_catalogo_sat" action="action_cfdi_sat_forma_pago"/>
+	    <menuitem id="cfdi_catalogo_sat_metodo_pago" parent="cfdi_catalogo_sat" action="action_cfdi_sat_metodo_pago"/>
+	    <menuitem id="cfdi_catalogo_sat_uso_cfdi" parent="cfdi_catalogo_sat" action="action_cfdi_sat_uso_cfdi"/>
+	    <menuitem id="cfdi_catalogo_sat_tipo_relacion" parent="cfdi_catalogo_sat" action="action_cfdi_sat_tipo_relacion"/>
+	
+	</odoo>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <odoo>
+        <data noupdate="1">
+            <record id="sat_category_02" model="product.sat.category">
+                <field name="name">No existe en el catálogo (Público en general)</field>
+                <field name="code">01010101</field>
+            </record>
+        </data>
+    </odoo>

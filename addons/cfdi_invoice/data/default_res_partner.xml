@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <odoo>
+        <data noupdate="0">
+            <record id="default_res_partner" model="res.partner">
+                <field name="name">PUBLICO EN GENERAL</field>
+                <field name="vat">XAXX010101000</field>
+                <field name="company_type">company</field>
+                <field name="customer">True</field>
+            </record>
+        </data>
+    </odoo>
